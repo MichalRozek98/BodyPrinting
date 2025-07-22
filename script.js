@@ -1,14 +1,11 @@
 const canvas = document.getElementById('Signature');
 const context = canvas.getContext("2d");
 
-// Wykrywanie urządzeń mobilnych
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-// Deklaracja zmiennych przed użyciem
 const lineWidthRange = document.querySelector('.js-line-range');
 const lineWidthLabel = document.querySelector('.js-range-value');
 
-// Ustawienia rysowania
 context.lineCap = "round";
 context.lineJoin = "round";
 context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
@@ -16,17 +13,16 @@ context.fillStyle = 'rgba(255, 0, 0, 0.01)';
 context.lineWidth = 5;
 context.globalCompositeOperation = 'source-over';
 
-// Ustawienie rozmiarów płótna
 function resizeCanvas() {
     const box = document.getElementById('SignatureBox');
     if (isMobile) {
         canvas.width = box.offsetWidth;
         canvas.height = box.offsetHeight;
     } else {
-        canvas.width = 400; // Stały rozmiar na komputerach
+        canvas.width = 400;
         canvas.height = 700;
     }
-    // Przywrócenie ustawień rysowania
+
     context.lineCap = "round";
     context.lineJoin = "round";
     context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
@@ -37,7 +33,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// Nasłuchiwanie zdarzeń dla suwaka
+
 function updateLineWidth(event) {
     const width = event.target.value;
     lineWidthLabel.innerHTML = width;
@@ -103,7 +99,7 @@ function saveSignature() {
     console.log(dataURL);
 }
 
-// Zdarzenia dla płótna
+
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("touchstart", startDrawing, { passive: false });
 canvas.addEventListener("mouseup", endDrawing);
@@ -111,7 +107,7 @@ canvas.addEventListener("touchend", endDrawing, { passive: false });
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("touchmove", draw, { passive: false });
 
-// Zdarzenie dla przycisku "Wyczyść podpis"
+
 document.getElementById("ClearSignature").addEventListener("click", function() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById("SignatureData").value = "";
