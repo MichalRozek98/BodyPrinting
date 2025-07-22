@@ -1,0 +1,161 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f5f5f5 100%);
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+#SignatureBox {
+    background: url('https://uwr.eu.qualtrics.com/ControlPanel/Graphic.php?IM=IM_bYWUBP7mgFFutoT');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 1;
+    width: 400px;
+    height: 700px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#Signature {
+    opacity: 0.85;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.range-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.range-container label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    margin-right: 15px;
+}
+
+.range-container input[type="range"] {
+    width: 150px;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: background 0.3s ease;
+    touch-action: manipulation;
+}
+
+.range-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #ff4d4d;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.range-container input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #ff4d4d;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.range-container input[type="range"]:hover::-webkit-slider-thumb,
+.range-container input[type="range"]:hover::-moz-range-thumb {
+    transform: scale(1.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.range-container input[type="range"]:active::-webkit-slider-thumb,
+.range-container input[type="range"]:active::-moz-range-thumb {
+    transform: scale(1.1);
+}
+
+#ClearSignature {
+    background: linear-gradient(135deg, #ff4d4d 0%, #e60000 100%);
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+}
+
+#ClearSignature:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #ff6666 0%, #ff1a1a 100%);
+}
+
+#ClearSignature:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+    #SignatureBox {
+        width: 90vw;
+        height: calc(90vw * 1.75);
+    }
+    .range-container label {
+        font-size: 0.95rem;
+    }
+    .range-container input[type="range"] {
+        width: 50vw;
+    }
+    #ClearSignature {
+        font-size: 0.95rem;
+        padding: 0.6rem 1.2rem;
+    }
+}
+
+@media (max-width: 400px) {
+    #SignatureBox {
+        width: 85vw;
+        height: calc(85vw * 1.75);
+    }
+    .range-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .range-container label {
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+}
