@@ -8,9 +8,9 @@ const lineWidthLabel = document.querySelector('.js-range-value');
 
 context.lineCap = "round";
 context.lineJoin = "round";
-context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
-context.fillStyle = 'rgba(255, 0, 0, 0.01)';
-context.lineWidth = 5;
+context.strokeStyle = '#FF000008'; // Spójne z draw
+context.fillStyle = '#FF000008';
+context.lineWidth = 10;
 context.globalCompositeOperation = 'source-over';
 
 function resizeCanvas() {
@@ -25,21 +25,20 @@ function resizeCanvas() {
 
     context.lineCap = "round";
     context.lineJoin = "round";
-    context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.01)';
-    context.lineWidth = lineWidthRange.value || 5;
+    context.strokeStyle = '#FF000008';
+    context.fillStyle = '#FF000008';
+    context.lineWidth = lineWidthRange.value || 10;
     context.globalCompositeOperation = 'source-over';
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-
 function updateLineWidth(event) {
     const width = event.target.value;
     lineWidthLabel.innerHTML = width;
     context.lineWidth = width;
-    context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.01)';
+    context.strokeStyle = '#FF000008';
+    context.fillStyle = '#FF000008';
 }
 lineWidthRange.addEventListener('input', updateLineWidth);
 lineWidthRange.addEventListener('change', updateLineWidth);
@@ -50,8 +49,8 @@ function startDrawing(e) {
     if (e.target === canvas) {
         drawing = true;
         context.beginPath();
-        context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
-        context.fillStyle = 'rgba(255, 0, 0, 0.01)';
+        context.strokeStyle = '#FF000008';
+        context.fillStyle = '#FF000008';
         draw(e);
         if (isMobile && e.type === 'touchstart') {
             e.preventDefault();
@@ -83,11 +82,12 @@ function getMousePos(canvas, evt) {
 
 function draw(e) {
     if (!drawing) return;
-    context.strokeStyle = 'rgba(255, 0, 0, 0.006)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.006)';
+    context.strokeStyle = '#FF000008';
     let { x, y } = getMousePos(canvas, e);
     context.lineTo(x, y);
-    context.stroke();
+    context.stroke(); // Rysuje segment z zaokrąglonymi końcami (kółko)
+    context.beginPath(); // Nowa ścieżka dla kolejnego kółka
+    context.moveTo(x, y); // Przygotuj punkt początkowy dla następnego segmentu
     if (isMobile && e.type === 'touchmove') {
         e.preventDefault();
     }
@@ -99,7 +99,6 @@ function saveSignature() {
     console.log(dataURL);
 }
 
-
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("touchstart", startDrawing, { passive: false });
 canvas.addEventListener("mouseup", endDrawing);
@@ -107,17 +106,16 @@ canvas.addEventListener("touchend", endDrawing, { passive: false });
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("touchmove", draw, { passive: false });
 
-
 document.getElementById("ClearSignature").addEventListener("click", function() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById("SignatureData").value = "";
-    context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.01)';
+    context.strokeStyle = '#FF000008';
+    context.fillStyle = '#FF000008';
 });
 document.getElementById("ClearSignature").addEventListener("touchend", function(e) {
     e.preventDefault();
     context.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById("SignatureData").value = "";
-    context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.01)';
+    context.strokeStyle = '#FF000008';
+    context.fillStyle = '#FF000008';
 });
