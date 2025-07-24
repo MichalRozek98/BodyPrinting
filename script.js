@@ -83,8 +83,8 @@ function getMousePos(canvas, evt) {
 
 function draw(e) {
     if (!drawing) return;
-    context.strokeStyle = 'rgba(255, 0, 0, 0.01)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.01)';
+    context.strokeStyle = 'rgba(255, 0, 0, 0.006)';
+    context.fillStyle = 'rgba(255, 0, 0, 0.006)';
     let { x, y } = getMousePos(canvas, e);
     context.lineTo(x, y);
     context.stroke();
