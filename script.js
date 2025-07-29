@@ -1,6 +1,7 @@
 const canvas = document.getElementById('Signature');
 const context = canvas.getContext("2d");
-
+canvas.width = 313;
+canvas.height = 552;
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 const lineWidthRange = document.querySelector('.js-line-range');
@@ -13,19 +14,7 @@ context.fillStyle = 'rgba(255, 0, 0, 0.08)';
 context.lineWidth = 10;
 context.globalCompositeOperation = 'source-over';
 
-function resizeCanvas() {
-    canvas.width = 313;
-    canvas.height = 552;
 
-    context.lineCap = "round";
-    context.lineJoin = "round";
-    context.strokeStyle = 'rgba(255, 0, 0, 0.08)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.08)';
-    context.lineWidth = lineWidthRange.value ? parseInt(lineWidthRange.value) : 10;
-    context.globalCompositeOperation = 'source-over';
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
 
 function updateLineWidth(event) {
     const width = event ? event.target.value : 10;
