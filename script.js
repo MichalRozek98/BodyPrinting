@@ -29,6 +29,7 @@ if (lineWidthRange) {
     updateLineWidth();
 }
 
+let canvasContent = null;
 let drawing = false;
 let lastDrawTime = 0;
 const drawThrottle = 30;
@@ -99,7 +100,11 @@ function draw(e) {
         e.stopPropagation();
     }
     // Save canvas content after each draw
-    canvasContent = context.getImageData(0, 0, canvas.width, canvas.height);
+    try {
+        canvasContent = context.getImageData(0, 0, canvas.width, canvas.height);
+    } catch (err) {
+        console.error('Error saving canvas content:', err);
+    }
 }
 
 function saveSignature() {
@@ -131,10 +136,25 @@ document.getElementById("ClearSignature").addEventListener("touchend", function(
     context.lineWidth = lineWidthRange.value ? parseInt(lineWidthRange.value) : 10;
 });
 
-window.addEventListener('scroll', function() {
-    if (canvasContent) {
-        requestAnimationFrame(() => {
-            context.putImageData(canvasContent, 0, 0);
-        });
+window.addEventListener('scroll', function () {
+    try {
+        if (canvasContent && context && context.canvas) {
+            if (
+                canvasContent.width === context.canvas.width &&
+                canvasContent.height === context.canvas.height
+            ) {
+                requestAnimationFrame(() => {
+                    try {
+                        context.putImageData(canvasContent, 0, 0);
+                    } catch (err) {
+                        console.error('Error restoring canvas content:', err);
+                    }
+                });
+            } else {
+                console.warn('Canvas dimensions do not match canvasContent, skipping restore');
+            }
+        }
+    } catch (err) {
+        console.error('Error in scroll event handler:', err);
     }
 });
