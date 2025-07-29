@@ -14,8 +14,6 @@ context.fillStyle = 'rgba(255, 0, 0, 0.08)';
 context.lineWidth = 10;
 context.globalCompositeOperation = 'source-over';
 
-
-
 function updateLineWidth(event) {
     const width = event ? event.target.value : 10;
     lineWidthLabel.innerHTML = width;
@@ -38,7 +36,7 @@ const drawThrottle = 30;
 function preventScroll(e) {
     if (isMobile) {
         e.preventDefault();
-        e.stopPropagation(); // Stop event propagation to parent elements
+        e.stopPropagation();
     }
 }
 
@@ -51,8 +49,7 @@ function startDrawing(e) {
             draw(e);
             if (isMobile && e.type === 'touchstart') {
                 e.preventDefault();
-                e.stopPropagation(); // Stop propagation to prevent scrolling
-                // Disable scrolling on the document and parent container
+                e.stopPropagation();
                 document.body.style.overflow = 'hidden';
                 document.getElementById('SignatureBox').style.overflow = 'hidden';
                 document.getElementById('SignatureBox').style.touchAction = 'none';
@@ -66,8 +63,7 @@ function endDrawing(e) {
             saveSignature();
             if (isMobile && e.type === 'touchend') {
                 e.preventDefault();
-                e.stopPropagation(); // Stop propagation to prevent scrolling
-                // Re-enable scrolling and touch actions
+                e.stopPropagation();
                 document.body.style.overflow = '';
                 document.getElementById('SignatureBox').style.overflow = '';
                 document.getElementById('SignatureBox').style.touchAction = '';
@@ -100,12 +96,10 @@ function draw(e) {
     lastDrawTime = currentTime;
     if (isMobile && e.type === 'touchmove') {
         e.preventDefault();
-        e.stopPropagation(); // Stop propagation to prevent scrolling
-        // Re-enable scrolling and touch actions
-        document.body.style.overflow = '';
-        document.getElementById('SignatureBox').style.overflow = '';
-        document.getElementById('SignatureBox').style.touchAction = '';
+        e.stopPropagation();
     }
+    // Save canvas content after each draw
+    canvasContent = context.getImageData(0, 0, canvas.width, canvas.height);
 }
 
 function saveSignature() {
@@ -135,4 +129,12 @@ document.getElementById("ClearSignature").addEventListener("touchend", function(
     context.strokeStyle = 'rgba(255, 0, 0, 0.08)';
     context.fillStyle = 'rgba(255, 0, 0, 0.08)';
     context.lineWidth = lineWidthRange.value ? parseInt(lineWidthRange.value) : 10;
+});
+
+window.addEventListener('scroll', function() {
+    if (canvasContent) {
+        requestAnimationFrame(() => {
+            context.putImageData(canvasContent, 0, 0);
+        });
+    }
 });
