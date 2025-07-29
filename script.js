@@ -8,20 +8,14 @@ const lineWidthLabel = document.querySelector('.js-range-value');
 
 context.lineCap = "round";
 context.lineJoin = "round";
-context.strokeStyle = 'rgba(255, 0, 0, 0.08)'; // Alfa 0.01 dla maksymalnej intensywności po 3 sekundach
+context.strokeStyle = 'rgba(255, 0, 0, 0.08)';
 context.fillStyle = 'rgba(255, 0, 0, 0.08)';
-context.lineWidth = 10; // Początkowa grubość linii
+context.lineWidth = 10;
 context.globalCompositeOperation = 'source-over';
 
 function resizeCanvas() {
-    const box = document.getElementById('SignatureBox');
-    if (isMobile) {
-        canvas.width = box.offsetWidth;
-        canvas.height = box.offsetHeight;
-    } else {
-        canvas.width = 400;
-        canvas.height = 700;
-    }
+    canvas.width = 313;
+    canvas.height = 552;
 
     context.lineCap = "round";
     context.lineJoin = "round";
@@ -43,7 +37,6 @@ function updateLineWidth(event) {
 lineWidthRange.addEventListener('input', updateLineWidth);
 lineWidthRange.addEventListener('change', updateLineWidth);
 
-// Inicjalizuj wartość suwaka i etykiety
 if (lineWidthRange) {
     lineWidthRange.value = 10;
     updateLineWidth();
@@ -51,30 +44,47 @@ if (lineWidthRange) {
 
 let drawing = false;
 let lastDrawTime = 0;
-const drawThrottle = 30; // Throttling co 30 ms (100 segmentów w 3 sekundy)
+const drawThrottle = 30;
+
+function preventScroll(e) {
+    if (isMobile) {
+        e.preventDefault();
+        e.stopPropagation(); // Stop event propagation to parent elements
+    }
+}
 
 function startDrawing(e) {
-    if (e.target === canvas) {
-        drawing = true;
-        context.beginPath();
-        context.strokeStyle = 'rgba(255, 0, 0, 0.08)';
-        context.fillStyle = 'rgba(255, 0, 0, 0.08)';
-        draw(e);
-        if (isMobile && e.type === 'touchstart') {
-            e.preventDefault();
+        if (e.target === canvas) {
+            drawing = true;
+            context.beginPath();
+            context.strokeStyle = 'rgba(255, 0, 0, 0.08)';
+            context.fillStyle = 'rgba(255, 0, 0, 0.08)';
+            draw(e);
+            if (isMobile && e.type === 'touchstart') {
+                e.preventDefault();
+                e.stopPropagation(); // Stop propagation to prevent scrolling
+                // Disable scrolling on the document and parent container
+                document.body.style.overflow = 'hidden';
+                document.getElementById('SignatureBox').style.overflow = 'hidden';
+                document.getElementById('SignatureBox').style.touchAction = 'none';
+            }
         }
     }
-}
 
 function endDrawing(e) {
-    if (e.target === canvas) {
-        drawing = false;
-        saveSignature();
-        if (isMobile && e.type === 'touchend') {
-            e.preventDefault();
+        if (e.target === canvas) {
+            drawing = false;
+            saveSignature();
+            if (isMobile && e.type === 'touchend') {
+                e.preventDefault();
+                e.stopPropagation(); // Stop propagation to prevent scrolling
+                // Re-enable scrolling and touch actions
+                document.body.style.overflow = '';
+                document.getElementById('SignatureBox').style.overflow = '';
+                document.getElementById('SignatureBox').style.touchAction = '';
+            }
         }
     }
-}
 
 function getMousePos(canvas, evt) {
     const rect = canvas.getBoundingClientRect();
@@ -91,16 +101,21 @@ function getMousePos(canvas, evt) {
 function draw(e) {
     if (!drawing) return;
     const currentTime = Date.now();
-    if (currentTime - lastDrawTime < drawThrottle) return; // Throttling
+    if (currentTime - lastDrawTime < drawThrottle) return;
     context.strokeStyle = 'rgba(255, 0, 0, 0.08)';
     let { x, y } = getMousePos(canvas, e);
     context.lineTo(x, y);
-    context.stroke(); // Rysuje segment z zaokrąglonymi końcami (kółko)
+    context.stroke();
     context.beginPath();
-    context.moveTo(x, y); // Przygotuj punkt początkowy dla następnego segmentu
+    context.moveTo(x, y);
     lastDrawTime = currentTime;
     if (isMobile && e.type === 'touchmove') {
         e.preventDefault();
+        e.stopPropagation(); // Stop propagation to prevent scrolling
+        // Re-enable scrolling and touch actions
+        document.body.style.overflow = '';
+        document.getElementById('SignatureBox').style.overflow = '';
+        document.getElementById('SignatureBox').style.touchAction = '';
     }
 }
 
