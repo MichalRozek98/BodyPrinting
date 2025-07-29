@@ -29,8 +29,6 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     touch-action: none;
     overscroll-behavior: none;
-    -webkit-transform: translateZ(0);
-    will-change: transform;
 }
 
 #Signature {
@@ -43,8 +41,6 @@ body {
     left: 0;
     touch-action: none;
     overscroll-behavior: none;
-    -webkit-transform: translateZ(0);
-    will-change: transform;
 }
 
 .range-container {
