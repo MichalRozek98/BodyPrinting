@@ -122,18 +122,14 @@ canvas.addEventListener("touchmove", draw, { passive: false });
 
 document.getElementById("ClearSignature").addEventListener("click", function() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+    canvasContent = null;
     document.getElementById("SignatureData").value = "";
-    context.strokeStyle = 'rgba(255, 0, 0, 0.08)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.08)';
-    context.lineWidth = lineWidthRange.value ? parseInt(lineWidthRange.value) : 10;
 });
 document.getElementById("ClearSignature").addEventListener("touchend", function(e) {
     e.preventDefault();
     context.clearRect(0, 0, canvas.width, canvas.height);
+    canvasContent = null;
     document.getElementById("SignatureData").value = "";
-    context.strokeStyle = 'rgba(255, 0, 0, 0.08)';
-    context.fillStyle = 'rgba(255, 0, 0, 0.08)';
-    context.lineWidth = lineWidthRange.value ? parseInt(lineWidthRange.value) : 10;
 });
 
 window.addEventListener('scroll', function () {
